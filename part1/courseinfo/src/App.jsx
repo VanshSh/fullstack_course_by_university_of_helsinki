@@ -26,6 +26,8 @@ const App = () => {
       <Total
         totalExercises = {courseObj} 
       />
+
+      
     </div>
   );
 };
