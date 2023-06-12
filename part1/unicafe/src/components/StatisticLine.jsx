@@ -9,5 +9,4 @@ const StatisticLine = (props) => {
     </>
   );
 };
-
 export default StatisticLine;
