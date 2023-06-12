@@ -1,8 +1,9 @@
 import React from 'react'
 
 const Header = (props) => {
+  const courseName =  props.course.name;
   return (
-    <h1>{props.course}</h1>
+    <h1>{courseName}</h1>
   )
 }
 

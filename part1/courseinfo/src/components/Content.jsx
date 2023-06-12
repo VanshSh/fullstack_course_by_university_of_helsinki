@@ -2,16 +2,14 @@ import React from "react";
 import Part from "./Part";
 
 const Content = (props) => {
-  const { courseObj } = props;
-  return (
+const [part1,part2,part3] = props.course.parts;
+return (
+
     <div>
-      {courseObj.map((item, index) => {
-        return (
-          <div key={index} >
-            <Part item={item} />
-          </div>
-        );
-      })}
+
+      <Part item={part1} />
+      <Part item={part2} />
+      <Part item={part3} />
     </div>
   );
 };

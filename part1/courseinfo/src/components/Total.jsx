@@ -1,11 +1,9 @@
 import React from "react";
 
 const Total = (props) => {
-  const { totalExercises } = props;
   let totalNumber = 0;
-  const total = totalExercises.map((item) => {
-    return (totalNumber += item.exercises);
-  });
+  const [part1, part2, part3] = props.course.parts;
+  totalNumber = part1.exercises + part2.exercises + part3.exercises;
 
   return <div>Number of exercises {totalNumber}</div>;
 };
