@@ -1,35 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import Button from "./components/Button";
+import StatisticLine from "./components/StatisticLine";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+  const goodHandler = () => {
+    setGood((prev) => prev + 1);
+  };
+  const neutralHandler = () => {
+    setNeutral((prev) => prev + 1);
+  };
+  const badHandler = () => {
+    setBad((prev) => prev + 1);
+  };
 
+  const checkAnyFeedback = () => {
+    if (good === 0 && neutral === 0 && bad === 0) {
+      return false;
+    }
+    return true;
+  };
+
+  const avergaeValue = () => {
+    const total = good * 1 + neutral * 0 + bad * -1;
+    const average = total / (good + neutral + bad);
+    return average;
+  };
+  const percentageOfPositive = () => {
+    const total = good + neutral + bad;
+    const positive = (good / total) * 100;
+    return `${positive} %`;
+  };
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <p>give feedback</p>
+      <div className="btn_div">
+        <Button text="good" handler={goodHandler} />
+        <Button text="neutral" handler={neutralHandler} />
+        <Button text="bad" handler={badHandler} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <p>statistics</p>
+      {checkAnyFeedback() ? (
+        <table>
+          <tbody>
+            <tr>
+              <StatisticLine text="good" value={good} />
+            </tr>
+            <tr>
+              <StatisticLine text="neutral" value={neutral} />
+            </tr>
+            <tr>
+              <StatisticLine text="bad" value={bad} />
+            </tr>
+            <tr>
+              <StatisticLine text="all" value={good + neutral + bad} />
+            </tr>
+            <tr>
+              <StatisticLine text="average" value={avergaeValue()} />
+            </tr>
+            <tr>
+              <StatisticLine text="positive" value={percentageOfPositive()} />
+            </tr>
+          </tbody>
+        </table>
+      ) : (
+        <p>No feedback given</p>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
