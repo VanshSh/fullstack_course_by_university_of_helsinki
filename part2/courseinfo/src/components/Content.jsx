@@ -1,13 +1,13 @@
 import React from "react";
 import Part from "./Part";
 
-const Content = (props) => {
-  const [part1, part2, part3] = props.course.parts;
+const Content = ({ course }) => {
+  const parts = course.parts;
   return (
     <div>
-      <Part item={part1} />
-      <Part item={part2} />
-      <Part item={part3} />
+      {parts.map((part) => {
+        return <Part key={part.id} item={part} />;
+      })}
     </div>
   );
 };
