@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterForm from "./components/FilterForm";
+import axios from "axios";
 import NewNameForm from "./components/NewNameForm";
 import FilteredPerson from "./components/FilteredPerson";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [filter, setFilter] = useState("");
   const [newName, setNewName] = useState("");
   const [number, setNumber] = useState("");
+
+  // Fetch data from json-server
+  useEffect(() => {
+    const promise = axios.get("http://localhost:3001/persons");
+    promise.then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   // Add new name and number functionality 👇
   const addNameHandler = (event) => {
@@ -44,12 +48,14 @@ const App = () => {
     setNumber(event.target.value);
   };
 
+  // Filter Functionality 👇
+
   // Handle input change
   const handleInputChange = (event) => {
     setFilter(event.target.value);
   };
 
-  // Filter Functionality 👇
+  // Filter the persons array
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   );

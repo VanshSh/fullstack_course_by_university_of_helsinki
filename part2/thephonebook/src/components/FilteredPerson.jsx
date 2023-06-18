@@ -8,8 +8,8 @@ const FilteredPerson = (props) => {
     <div>
       {filteredPersonArr.map((person) => {
         return (
-          <div>
-            <PersonDetail key={person.name} person={person} />
+          <div key={person.name}>
+            <PersonDetail person={person} />
           </div>
         );
       })}
