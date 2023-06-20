@@ -2,14 +2,14 @@ import React from "react";
 import PersonDetail from "./PersonDetail";
 
 const FilteredPerson = (props) => {
-  const { filteredPersonArr } = props;
+  const { filteredPersonArr, deleteName } = props;
 
   return (
     <div>
       {filteredPersonArr.map((person) => {
         return (
-          <div key={person.name}>
-            <PersonDetail person={person} />
+          <div key={person.id}>
+            <PersonDetail person={person} deleteName={deleteName} />
           </div>
         );
       })}
