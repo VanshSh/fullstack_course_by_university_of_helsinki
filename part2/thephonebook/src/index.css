@@ -7,3 +7,23 @@ h1,h2,h3,h4,h5,h6{font-weight:bolder;color:#000}
     font-weight:800;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+  .error {
+    color: red;
+    background: #d3d3d3;
+    font-size: 20px;
+    border:3px solid  red;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .success{
+    color: green;
+    background: #d3d3d3;
+    font-size: 20px;
+    border:3px solid  green;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }

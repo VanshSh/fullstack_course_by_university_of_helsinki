@@ -5,15 +5,15 @@ const FilteredPerson = (props) => {
   const { filteredPersonArr, deleteName } = props;
 
   return (
-    <div>
+    <ul>
       {filteredPersonArr.map((person) => {
         return (
-          <div key={person.id}>
+          <li key={person.id}>
             <PersonDetail person={person} deleteName={deleteName} />
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 };
 

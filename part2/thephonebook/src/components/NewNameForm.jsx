@@ -11,11 +11,22 @@ const NewNameForm = (props) => {
   return (
     <form onSubmit={addNameHandler}>
       <div>
-        name: <input type="text" value={newName} onChange={nameChangeHandler} />
+        name:{" "}
+        <input
+          required
+          type="text"
+          value={newName}
+          onChange={nameChangeHandler}
+        />
       </div>
       <div>
         number:{" "}
-        <input type="number" value={number} onChange={numberChangeHandler} />
+        <input
+          required
+          type="number"
+          value={number}
+          onChange={numberChangeHandler}
+        />
       </div>
       <div>
         <button type="submit">add</button>

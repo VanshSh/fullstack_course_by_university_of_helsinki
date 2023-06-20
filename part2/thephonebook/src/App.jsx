@@ -3,12 +3,17 @@ import FilterForm from "./components/FilterForm";
 import NewNameForm from "./components/NewNameForm";
 import FilteredPerson from "./components/FilteredPerson";
 import services from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [filter, setFilter] = useState("");
   const [newName, setNewName] = useState("");
   const [number, setNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState({
+    message: null,
+    type: null,
+  });
 
   // Function to get all the persons from the server
   const getAllPersons = () => {
@@ -40,7 +45,7 @@ const App = () => {
 
     // Check if the name is already in the phonebook
     const duplicatePerson = persons.find(
-      (person) => person.name === newNameObj.name
+      (person) => person.name.toLowerCase() === newNameObj.name.toLowerCase()
     );
     if (duplicatePerson) {
       confirm(
@@ -52,6 +57,16 @@ const App = () => {
             return person.id !== duplicatePerson.id ? person : updatedPerson;
           })
         );
+        setErrorMessage({
+          message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
+          type: "success",
+        });
+        setTimeout(() => {
+          setErrorMessage({
+            message: null,
+            type: null,
+          });
+        }, 3000);
       });
       setNewName("");
       setNumber("");
@@ -61,6 +76,16 @@ const App = () => {
         setNewName("");
         setNumber("");
       });
+      setErrorMessage({
+        message: `Added ${newName}`,
+        type: "success",
+      });
+      setTimeout(() => {
+        setErrorMessage({
+          message: null,
+          type: null,
+        });
+      }, 3000);
     }
   };
 
@@ -82,13 +107,28 @@ const App = () => {
   // Delete Functionality 👇
   const deleteName = (person) => {
     confirm(`Delete ${person.name} ?`);
-    services.deletePerson(person.id).then(() => {
-      getAllPersons();
-    });
+    services
+      .deletePerson(person.id)
+      .then(() => {
+        getAllPersons();
+      })
+      .catch((error) => {
+        setErrorMessage({
+          message: `${person.name} was already removed from server`,
+          type: "error",
+        });
+        setTimeout(() => {
+          setErrorMessage({
+            message: null,
+            type: null,
+          });
+        }, 3000);
+      });
   };
 
   return (
     <div>
+      <Notification message={errorMessage.message} type={errorMessage.type} />
       <h1>Phonebook</h1>
       <FilterForm handleInputChange={handleFilterInputChange} />
       <h2>add a new</h2>
