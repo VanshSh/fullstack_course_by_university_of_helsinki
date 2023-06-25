@@ -56,7 +56,7 @@ const CountryDetails = ({ searchedCountry, allData }) => {
       </ul>
       <img src={flag} alt={commonName} />
 
-      <h3>Weather in Helsinki</h3>
+      <h3>Weather in {commonName}</h3>
       {Loading ? (
         <p>Loading...</p>
       ) : (
