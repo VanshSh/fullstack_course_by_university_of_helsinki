@@ -26,5 +26,5 @@
     "json-server": "^0.17.3",
     "vite": "^4.3.9"
   },
-  "proxy": "https://phonebook-backend-pink.vercel.app/"
+  "proxy": "http://localhost:3001/"
 }
