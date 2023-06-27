@@ -7,5 +7,13 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
-  // vite.config.js
+  // Vite config to proxy requests to the backend
+  server: {
+    proxy: {
+      "/api/persons": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+    },
+  },
 });
