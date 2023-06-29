@@ -10,7 +10,7 @@ const App = () => {
   const [filter, setFilter] = useState("");
   const [newName, setNewName] = useState("");
   const [number, setNumber] = useState("");
-  const [errorMessage, setErrorMessage] = useState({
+  const [notificationMessage, setNotificationMessage] = useState({
     message: null,
     type: null,
   });
@@ -42,51 +42,65 @@ const App = () => {
       name: newName,
       number: number,
     };
-
-    // Check if the name is already in the phonebook
-    const duplicatePerson = persons.find(
-      (person) => person.name.toLowerCase() === newNameObj.name.toLowerCase()
-    );
-    if (duplicatePerson) {
-      confirm(
-        `${newName} is already added to phonebook, replace the old number with a new one?`
-      );
-      services.update(duplicatePerson.id, newNameObj).then((updatedPerson) => {
-        setPersons(
-          persons.map((person) => {
-            return person.id !== duplicatePerson.id ? person : updatedPerson;
-          })
-        );
-        setErrorMessage({
-          message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
-          type: "success",
-        });
-        setTimeout(() => {
-          setErrorMessage({
-            message: null,
-            type: null,
-          });
-        }, 3000);
-      });
+    services.create(newNameObj).then((newPerson) => {
+      setPersons(persons.concat(newPerson));
       setNewName("");
       setNumber("");
-    } else {
-      services.create(newNameObj).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-        setNewName("");
-        setNumber("");
+    });
+    setNotificationMessage({
+      message: `Added ${newName}`,
+      type: "success",
+    });
+    setTimeout(() => {
+      setNotificationMessage({
+        message: null,
+        type: null,
       });
-      setErrorMessage({
-        message: `Added ${newName}`,
-        type: "success",
-      });
-      setTimeout(() => {
-        setErrorMessage({
-          message: null,
-          type: null,
-        });
-      }, 3000);
-    }
+    }, 3000);
+    // Check if the name is already in the phonebook
+    // const duplicatePerson = persons.find(
+    //   (person) => person.name.toLowerCase() === newNameObj.name.toLowerCase()
+    // );
+    // if (duplicatePerson) {
+    //   confirm(
+    //     `${newName} is already added to phonebook, replace the old number with a new one?`
+    //   );
+    //   services.update(duplicatePerson.id, newNameObj).then((updatedPerson) => {
+    //     setPersons(
+    //       persons.map((person) => {
+    //         return person.id !== duplicatePerson.id ? person : updatedPerson;
+    //       })
+    //     );
+    //     setNotificationMessage({
+    //       message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
+    //       type: "success",
+    //     });
+    //     setTimeout(() => {
+    //       setNotificationMessage({
+    //         message: null,
+    //         type: null,
+    //       });
+    //     }, 3000);
+    //   });
+    //   setNewName("");
+    //   setNumber("");
+    // } else {
+    //   services.create(newNameObj).then((newPerson) => {
+    //     setPersons(persons.concat(newPerson));
+    //     setNewName("");
+    //     setNumber("");
+    //   });
+    //   setNotificationMessage({
+    //     message: `Added ${newName}`,
+    //     type: "success",
+    //   });
+    //   setTimeout(() => {
+    //     setNotificationMessage({
+    //       message: null,
+    //       type: null,
+    //     });
+    //   }, 3000);
+    // }
   };
 
   // Filter Functionality 👇
@@ -98,7 +112,7 @@ const App = () => {
 
   // Filter the persons array
   const filteredPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(filter.toLowerCase())
+    person.name?.toLowerCase().includes(filter?.toLowerCase())
   );
 
   // Render the filtered persons or the original array
@@ -113,12 +127,12 @@ const App = () => {
         getAllPersons();
       })
       .catch((error) => {
-        setErrorMessage({
+        setNotificationMessage({
           message: `${person.name} was already removed from server`,
           type: "error",
         });
         setTimeout(() => {
-          setErrorMessage({
+          setNotificationMessage({
             message: null,
             type: null,
           });
@@ -128,7 +142,10 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage.message} type={errorMessage.type} />
+      <Notification
+        message={notificationMessage.message}
+        type={notificationMessage.type}
+      />
       <h1>Phonebook</h1>
       <FilterForm handleInputChange={handleFilterInputChange} />
       <h2>add a new</h2>
