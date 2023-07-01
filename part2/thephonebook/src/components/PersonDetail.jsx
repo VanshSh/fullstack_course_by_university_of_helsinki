@@ -1,5 +1,3 @@
-import React from "react";
-
 const PersonDetail = (props) => {
   const { person, deleteName } = props;
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import PersonDetail from "./PersonDetail";
 
 const FilteredPerson = (props) => {
