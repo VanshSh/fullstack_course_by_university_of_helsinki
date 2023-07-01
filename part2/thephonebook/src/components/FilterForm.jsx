@@ -1,3 +1,5 @@
+import React from "react";
+
 const FilterForm = (props) => {
   const { handleInputChange } = props;
   return (

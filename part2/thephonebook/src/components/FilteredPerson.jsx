@@ -1,4 +1,6 @@
 import PersonDetail from "./PersonDetail";
+import React from "react";
+
 
 const FilteredPerson = (props) => {
   const { filteredPersonArr, deleteName } = props;

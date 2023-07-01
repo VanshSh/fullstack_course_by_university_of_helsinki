@@ -4,6 +4,7 @@ import NewNameForm from "./components/NewNameForm";
 import FilteredPerson from "./components/FilteredPerson";
 import services from "./services/persons";
 import Notification from "./components/Notification";
+import React from "react";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
