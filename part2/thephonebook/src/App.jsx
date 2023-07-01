@@ -42,65 +42,52 @@ const App = () => {
       name: newName,
       number: number,
     };
-    services.create(newNameObj).then((newPerson) => {
-      setPersons(persons.concat(newPerson));
+
+    // Check if the name is already in the phonebook
+    const duplicatePerson = persons.find(
+      (person) => person.name.toLowerCase() === newNameObj.name.toLowerCase()
+    );
+    if (duplicatePerson) {
+      confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+
+      services.update(duplicatePerson.id, newNameObj).then((updatedPerson) => {
+        setPersons(
+          persons.map((person) => {
+            return person.id !== duplicatePerson.id ? person : updatedPerson;
+          })
+        );
+        setNotificationMessage({
+          message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
+          type: "success",
+        });
+        setTimeout(() => {
+          setNotificationMessage({
+            message: null,
+            type: null,
+          });
+        }, 3000);
+      });
       setNewName("");
       setNumber("");
-    });
-    setNotificationMessage({
-      message: `Added ${newName}`,
-      type: "success",
-    });
-    setTimeout(() => {
-      setNotificationMessage({
-        message: null,
-        type: null,
+    } else {
+      services.create(newNameObj).then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+        setNewName("");
+        setNumber("");
       });
-    }, 3000);
-    // Check if the name is already in the phonebook
-    // const duplicatePerson = persons.find(
-    //   (person) => person.name.toLowerCase() === newNameObj.name.toLowerCase()
-    // );
-    // if (duplicatePerson) {
-    //   confirm(
-    //     `${newName} is already added to phonebook, replace the old number with a new one?`
-    //   );
-    //   services.update(duplicatePerson.id, newNameObj).then((updatedPerson) => {
-    //     setPersons(
-    //       persons.map((person) => {
-    //         return person.id !== duplicatePerson.id ? person : updatedPerson;
-    //       })
-    //     );
-    //     setNotificationMessage({
-    //       message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
-    //       type: "success",
-    //     });
-    //     setTimeout(() => {
-    //       setNotificationMessage({
-    //         message: null,
-    //         type: null,
-    //       });
-    //     }, 3000);
-    //   });
-    //   setNewName("");
-    //   setNumber("");
-    // } else {
-    //   services.create(newNameObj).then((newPerson) => {
-    //     setPersons(persons.concat(newPerson));
-    //     setNewName("");
-    //     setNumber("");
-    //   });
-    //   setNotificationMessage({
-    //     message: `Added ${newName}`,
-    //     type: "success",
-    //   });
-    //   setTimeout(() => {
-    //     setNotificationMessage({
-    //       message: null,
-    //       type: null,
-    //     });
-    //   }, 3000);
-    // }
+      setNotificationMessage({
+        message: `Added ${newName}`,
+        type: "success",
+      });
+      setTimeout(() => {
+        setNotificationMessage({
+          message: null,
+          type: null,
+        });
+      }, 3000);
+    }
   };
 
   // Filter Functionality 👇
