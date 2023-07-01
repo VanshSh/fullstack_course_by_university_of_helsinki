@@ -53,41 +53,69 @@ const App = () => {
         `${newName} is already added to phonebook, replace the old number with a new one?`
       );
 
-      services.update(duplicatePerson.id, newNameObj).then((updatedPerson) => {
-        setPersons(
-          persons.map((person) => {
-            return person.id !== duplicatePerson.id ? person : updatedPerson;
-          })
-        );
-        setNotificationMessage({
-          message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
-          type: "success",
-        });
-        setTimeout(() => {
+      services
+        .update(duplicatePerson.id, newNameObj)
+        .then((updatedPerson) => {
+          setPersons(
+            persons.map((person) => {
+              return person.id !== duplicatePerson.id ? person : updatedPerson;
+            })
+          );
           setNotificationMessage({
-            message: null,
-            type: null,
+            message: `${newName} is already added to phonebook, replaced the old number with a new one.`,
+            type: "success",
           });
-        }, 3000);
-      });
+          setTimeout(() => {
+            setNotificationMessage({
+              message: null,
+              type: null,
+            });
+          }, 3000);
+        })
+        .catch((err) => {
+          setNotificationMessage({
+            message: `${err.response.data.error}`,
+            type: "error",
+          });
+          setTimeout(() => {
+            setNotificationMessage({
+              message: null,
+              type: null,
+            });
+          }, 3000);
+        });
       setNewName("");
       setNumber("");
     } else {
-      services.create(newNameObj).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-        setNewName("");
-        setNumber("");
-      });
-      setNotificationMessage({
-        message: `Added ${newName}`,
-        type: "success",
-      });
-      setTimeout(() => {
-        setNotificationMessage({
-          message: null,
-          type: null,
+      services
+        .create(newNameObj)
+        .then((newPerson) => {
+          setPersons(persons.concat(newPerson));
+          setNotificationMessage({
+            message: `Added ${newName}`,
+            type: "success",
+          });
+          setTimeout(() => {
+            setNotificationMessage({
+              message: null,
+              type: null,
+            });
+          }, 3000);
+          setNewName("");
+          setNumber("");
+        })
+        .catch((err) => {
+          setNotificationMessage({
+            message: `${err.response.data.error}`,
+            type: "error",
+          });
+          setTimeout(() => {
+            setNotificationMessage({
+              message: null,
+              type: null,
+            });
+          }, 3000);
         });
-      }, 3000);
     }
   };
 

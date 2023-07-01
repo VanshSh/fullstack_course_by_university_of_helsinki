@@ -23,7 +23,7 @@ const NewNameForm = (props) => {
         number:{" "}
         <input
           required
-          type="number"
+          type="text"
           value={number}
           onChange={numberChangeHandler}
         />
